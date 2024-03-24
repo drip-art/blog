@@ -30,7 +30,7 @@ export default function Index({
     const router = useRouter();
 
     if (!router.isFallback && !post?.slug) {
-        return(
+        return (
             <Error />
         );
     }
@@ -38,31 +38,31 @@ export default function Index({
     // set our url
     let url = Config('app.url');
 
-    if(
+    if (
         process.env.NEXT_PUBLIC_VERCEL_URL !== undefined &&
         process.env.NEXT_PUBLIC_VERCEL_ENV !== undefined &&
         process.env.NEXT_PUBLIC_VERCEL_ENV !== "production"
-    ){
+    ) {
         url = "https://" + process.env.NEXT_PUBLIC_VERCEL_URL;
     }
 
     // Set the social share image
     let image = socialCardLarge.src;
 
-    if(post.coverImage){
+    if (post.coverImage) {
         image = post.coverImage;
     }
 
-    return(
+    return (
         <>
-            <Seo 
+            <Seo
                 title={`${post.title} - ${Config('app.description')}`}
                 description={post.description || Config('app.description')}
                 themeColor={"#f8fafc"}
                 url={`${url}${router.asPath}`}
                 image={`${url}${image}`}
             />
-            <ArticleJsonLd 
+            <ArticleJsonLd
                 useAppDir={false}
                 url={Config('app.url') + router.asPath}
                 title={post.title}
@@ -162,25 +162,14 @@ export default function Index({
                                             Sign up for our newsletter.
                                         </h2>
                                         <div className="mt-5 max-w-md">
-                                            <NewsletterForm 
-                                                action={Config('app.convert_action_url')} 
+                                            <NewsletterForm
+                                                action={Config('app.convert_action_url')}
                                             />
                                         </div>
                                     </section>
                                 </div>
                             )}
-                            <div className="relative">
-                                <section className="relative py-16 border-t border-slate-200 dark:border-slate-200/5">
-                                <div className='pt-8 pb-10 text-center text-slate-500 dark:border-slate-200/5'>
-                                    Built with <a href='https://elegantframework.com/' 
-                                        aria-label='Built with the Elegant framework'
-                                        className='font-semibold hover:text-primary-500 dark:hover:text-primary-400'
-                                    >
-                                        Elegant
-                                    </a>.
-                                </div>
-                                </section>
-                            </div>
+
                         </footer>
                     </div>
                 </div>
@@ -191,27 +180,27 @@ export default function Index({
 
 export async function getStaticPaths() {
     const posts = getDocuments('posts', [
-      'title',
-      'author',
-      'slug',
-      'description',
-      'coverImage',
-      'publishedAt',
+        'title',
+        'author',
+        'slug',
+        'description',
+        'coverImage',
+        'publishedAt',
     ]);
 
     const paths = posts.map((post) => {
-        if(post.status === "published"){
-            return({
+        if (post.status === "published") {
+            return ({
                 params: { slug: post.slug }
             });
         }
     });
-   
+
     // We'll pre-render only these paths at build time.
     // { fallback: false } means other routes should 404.
-    return { 
-      paths, 
-      fallback: false 
+    return {
+        paths,
+        fallback: false
     };
 }
 
@@ -224,18 +213,17 @@ export async function getStaticProps(context: GetServerSidePropsContext) {
         'description',
         'coverImage',
         'publishedAt',
-        'content'    
+        'content'
     ]);
 
     let content = "";
 
-    if(post.status === "published")
-    {
+    if (post.status === "published") {
         content = await MarkdownToHtml(post.content);
     }
-    
+
     return {
-        props: { 
+        props: {
             post,
             content,
         }

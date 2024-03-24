@@ -15,7 +15,18 @@ module.exports = {
         code: {
           highlight: 'rgb(125 211 252 / 0.1)',
         },
-        primary: colors.indigo,
+        primary: {
+            '50': '#d78190',
+            '100': '#d78190',
+            '200': '#d78190',
+            '300': '#d78190',
+            '400': '#d78190',
+            '500': '#d78190',
+            '600': '#d78190',
+            '700': '#d78190',
+            '800': '#d78190',
+            '900': '#d78190',
+        },
         secondary: colors.sky
       },
       typography: (theme) => ({
